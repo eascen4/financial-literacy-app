@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function NavigationBar() {
   const [showMenu, setShowMenu] = useState(false);
+  const auth = true;
 
   return (
     <div className="w-full h-16 fixed bg-blue-500 p-2 flex items-center justify-center">
@@ -22,7 +23,7 @@ export default function NavigationBar() {
         >
           menu
         </button>
-        {showMenu && (
+        {showMenu && !auth && (
           <ul className="absolute top-16 left-0 w-full bg-slate-400">
             <Link
               href="/login"
@@ -45,6 +46,46 @@ export default function NavigationBar() {
             >
               Leaderboard
             </Link>
+          </ul>
+        )}
+        {showMenu && auth && (
+          <ul className="absolute top-16 left-0 w-full bg-slate-400">
+            <Link
+              href="/lessons"
+              onClick={() => setShowMenu(false)}
+              className="h-14 flex items-center justify-center border-b"
+            >
+              Lessons
+            </Link>
+            <Link
+              href="/shop"
+              onClick={() => setShowMenu(false)}
+              className="h-14 flex items-center justify-center border-b"
+            >
+              Shop
+            </Link>
+            <Link
+              href="/rocket"
+              onClick={() => setShowMenu(false)}
+              className="h-14 flex items-center justify-center border-b"
+            >
+              Rocket
+            </Link>
+            <Link
+              href="/test"
+              onClick={() => setShowMenu(false)}
+              className="h-14 flex items-center justify-center border-b"
+            >
+              Test
+            </Link>
+            <Link
+              href="/leaderboard"
+              onClick={() => setShowMenu(false)}
+              className="h-14 flex items-center justify-center border-b"
+            >
+              Leaderboard
+            </Link>
+            <button className="h-14 w-full flex items-center justify-center">Logout</button>
           </ul>
         )}
       </nav>
