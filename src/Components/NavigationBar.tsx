@@ -1,10 +1,13 @@
-"use client";
+"use client"
+
+import {useCurrentUser} from "@/lib/useCurrentUser";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function NavigationBar() {
   const [showMenu, setShowMenu] = useState(false);
-  const auth = true;
+  const user = useCurrentUser();
 
   return (
     <div className="w-full h-16 fixed bg-blue-500 p-2 flex items-center justify-center">
@@ -23,7 +26,7 @@ export default function NavigationBar() {
         >
           menu
         </button>
-        {showMenu && !auth && (
+        {showMenu && !user && (
           <ul className="absolute top-16 left-0 w-full bg-slate-400">
             <Link
               href="/login"
@@ -48,7 +51,7 @@ export default function NavigationBar() {
             </Link>
           </ul>
         )}
-        {showMenu && auth && (
+        {showMenu && user && (
           <ul className="absolute top-16 left-0 w-full bg-slate-400">
             <Link
               href="/lessons"
@@ -85,7 +88,7 @@ export default function NavigationBar() {
             >
               Leaderboard
             </Link>
-            <button className="h-14 w-full flex items-center justify-center">Logout</button>
+            <button onClick={()=>{signOut()}} className="h-14 w-full flex items-center justify-center">Logout</button>
           </ul>
         )}
       </nav>

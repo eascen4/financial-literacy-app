@@ -1,3 +1,5 @@
+import GithubButton from "@/Components/GithubButton";
+import GoogleButton from "@/Components/GoogleButton";
 import LoginForm from "@/Components/LoginForm";
 import Link from "next/link";
 
@@ -9,9 +11,8 @@ export default function LoginPage() {
           <h1>Login</h1>
           <LoginForm />
           <div className="my-2 border" />
-          <button className="rounded-lg border py-2 bg-slate-400">
-            Login w/ Google
-          </button>
+          <GoogleButton text="Login"/>
+          <GithubButton text="Login"/>
         </div>
         <div className="text-sm mt-2">
           New to RocketFinance?{" "}
