@@ -1,21 +1,14 @@
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import type { Adapter } from "next-auth/adapters";
+
 import NextAuth from "next-auth";
-import authConfig from "@/auth.config";
-import { db } from "@/db";
+import db from "./db/drizzle";
+
+import github from "next-auth/providers/github"; "next-auth/providers/github";
+import google from "next-auth/providers/google";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  callbacks: {
-    async jwt({ token }) {
-      return token;
-    },
-    async session({ session, token}) {
-        if(token && session.user) {
-            session.user.id = token.sub;
-        }
-      return session;
-    },
-  },
-  session: {strategy: "jwt"},
-  adapter: PrismaAdapter(db),
-  ...authConfig,
+  adapter: DrizzleAdapter(db) as Adapter,
+  session: { strategy: "jwt" },
+  providers: [github, google],
 });
