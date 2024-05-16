@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Rocket Finance",
-  description: "Control your finances like a rocket scientist",
+  description: "Control your Finances like a Rocket Scientist",
 };
 
 export default async function RootLayout({
@@ -20,9 +20,9 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <SessionProvider session={session}>
-      <html className="h-full" lang="en">
-        <body className={`flex flex-col h-full ${inter.className}`}>
-          <main className="mt-16 flex-auto text-center">{children}</main>
+      <html lang="en">
+        <body className={inter.className}>
+          {children}
         </body>
       </html>
     </SessionProvider>
