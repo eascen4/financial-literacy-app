@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { API_AUTH_PREFIX, AUTH_ROUTES, DEFAULT_LOGIN_REDIRECT, PUBLIC_ROUTES } from "./lib/constants";
+import { NextResponse } from "next/server";
 
 export default auth((req) => {
   const { pathname } = req.nextUrl
@@ -10,21 +11,21 @@ export default auth((req) => {
   const isAuthRoute = AUTH_ROUTES.includes(pathname)
   
   if (isApiRouteRoute) {
-    return null
+    return NextResponse.next()
   }
 
   if(isAuthRoute) {
     if(isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl))
     }
-    return null
+    return NextResponse.next()
   }
 
   if(!isLoggedIn && !isPublicRoute) {
     return Response.redirect(new URL('/login', req.nextUrl))
   }
 
-  return null
+  return NextResponse.next()
 });
 
 export const config = {

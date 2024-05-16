@@ -1,12 +1,18 @@
 "use client"
 import { Button } from "@/components/ui/button"
+import { useCurrentUser } from "@/lib/client/useCurrentUser";
 import { signOut } from "next-auth/react"
+import Image from "next/image";
 
 const ProfilePage = () => {
+    const user = useCurrentUser();
   return (
-    <div>ProfilePage
+    <section>
+        <Image src={user?.image || "/default_pfp.svg"} alt="user image" width={100} height={100} />
+        <h1>Welcome, {user?.name}</h1>
+        <h2>Email: {user?.email}</h2>
         <Button onClick={() => signOut()}>Sign out</Button>
-    </div>
+    </section>
   )
 }
 export default ProfilePage

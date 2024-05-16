@@ -1,9 +1,10 @@
+"use client"
+import { useCurrentUser } from "@/lib/client/useCurrentUser";
 import { AUTH_LINKS, REST_OF_PAGES } from "@/lib/constants";
-import { currentUser } from "@/lib/server/currentUser";
 import Link from "next/link";
 
-const WebNav = async () => {
-  const user = await currentUser();
+const WebNav = () => {
+  const user = useCurrentUser();
   return (
     <nav className="hidden md:flex gap-2">
       {user

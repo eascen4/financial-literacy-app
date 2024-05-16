@@ -1,11 +1,10 @@
-import { currentUser } from "@/lib/server/currentUser";
 
 const Home = async () => {
 
   return (
-    <div>
+    <section>
       <h1>Home</h1>
-    </div>
+    </section>
   );
 };
 export default Home;

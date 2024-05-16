@@ -11,5 +11,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db) as Adapter,
   session: { strategy: "jwt" },
   providers: [github, google],
-  
+  pages: {
+    signIn: "/login",
+  }
 });
