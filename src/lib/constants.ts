@@ -1,3 +1,5 @@
+import { z } from "zod"
+
 export const AUTH_LINKS = [{ name: 'Sign Up', path: '/signup'}, { name: 'Log in', path: '/login'}]
 
 export const REST_OF_PAGES = [{ name: 'Profile', path: '/profile'}, { name: 'Shop', path: '/shop'}, { name: 'Rocket', path: '/rocket'}]
@@ -11,3 +13,9 @@ export const PROTECTED_ROUTES = ["/profile", "/shop", "/rocket"]
 export const API_AUTH_PREFIX = "/api/auth"
 
 export const DEFAULT_LOGIN_REDIRECT = "/profile"
+
+export const authSchema = (type : string) => z.object({
+    email: z.string().email(),
+    password: z.string().min(8),
+    name: type === "signup" ? z.string().min(3) : z.string().optional()
+  });

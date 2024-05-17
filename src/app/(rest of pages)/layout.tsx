@@ -6,7 +6,7 @@ import Link from "next/link";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <header className="bg-blue-200 h-16 w-full flex justify-between p-2 fixed">
+      <header className="bg-blue-200 h-16 w-full flex justify-between p-2 fixed z-50">
         <Link href="/" className="flex items-center font-semibold gap-3 text-xl">
           <Image src="/rocket.svg" width={30} height={30} alt="rocket icon" />
           Rocket Finance
@@ -14,7 +14,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <MobileNav />
         <WebNav />
       </header>
-      <main className="pt-16 flex-grow">{children}</main>
+      <main className="pt-16 bg-indigo-950 flex flex-col min-h-full text-slate-50">{children}</main>
     </>
   );
 };
