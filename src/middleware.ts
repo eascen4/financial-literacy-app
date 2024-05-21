@@ -1,9 +1,9 @@
-import { auth } from "@/auth";
-import { API_AUTH_PREFIX, AUTH_ROUTES, DEFAULT_LOGIN_REDIRECT, PUBLIC_ROUTES } from "./lib/constants";
+import { auth } from "@/auth"
 import { NextResponse } from "next/server";
+import { API_AUTH_PREFIX, AUTH_ROUTES, DEFAULT_LOGIN_REDIRECT, PUBLIC_ROUTES } from "./lib/constants";
 
 export default auth((req) => {
-  const { pathname } = req.nextUrl
+    const { pathname } = req.nextUrl
   const isLoggedIn = !!req.auth
 
   const isApiRouteRoute = pathname.startsWith(API_AUTH_PREFIX)
