@@ -1,9 +1,8 @@
-import useSessionServer from "@/lib/server/cachedAuth";
-import SignOutButton from "@/components/SignOutButton";
+import { cachedAuth } from "@/lib/server/caches";
 import ProfileCard from "@/components/ProfileCard";
 
 const ProfilePage = async () => {
-  const session = await useSessionServer();
+  const session = await cachedAuth();
 
   return (
     <section>
@@ -16,10 +15,11 @@ const ProfilePage = async () => {
             image: "/default_pfp.svg",
             isAdmin: false,
             points: 0,
+            activeLessonId: 1,
           }
         }
       />
-      
+      {JSON.stringify(session?.user)}
     </section>
   );
 };

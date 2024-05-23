@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   timestamp,
   pgTable,
@@ -5,9 +6,81 @@ import {
   primaryKey,
   integer,
   boolean,
+  serial,
 } from "drizzle-orm/pg-core";
 
 import type { AdapterAccountType } from "next-auth/adapters";
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const lessons = pgTable("lesson", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  order: integer("order").notNull(),
+});
+
+export const lessonsRelations = relations(lessons, ({ many }) => ({
+  challenges: many(challenges),
+}));
+
+export const challenges = pgTable("challenge", {
+  id: serial("id").primaryKey(),
+  lessonId: integer("lesson_id")
+    .references(() => lessons.id, { onDelete: "cascade" })
+    .notNull(),
+  question: text("question").notNull(),
+  order: integer("order").notNull(),
+});
+
+export const challengesRelations = relations(challenges, ({ one, many }) => ({
+  lesson: one(lessons, {
+    fields: [challenges.lessonId],
+    references: [lessons.id],
+  }),
+  challengeOptions: many(challengeOptions),
+  challengeProgresses: many(challengeProgress),
+}));
+
+export const challengeOptions = pgTable("challengeOption", {
+  id: serial("id").primaryKey(),
+  challengeId: integer("challenge_id")
+    .references(() => challenges.id, { onDelete: "cascade" })
+    .notNull(),
+  text: text("text").notNull(),
+  correct: boolean("correct").notNull(),
+});
+
+export const challengeOptionsRelations = relations(
+  challengeOptions,
+  ({ one }) => ({
+    challenge: one(challenges, {
+      fields: [challengeOptions.challengeId],
+      references: [challenges.id],
+    }),
+  })
+);
+
+export const challengeProgress = pgTable("challengeProgress", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  challengeId: integer("challenge_id")
+    .references(() => challenges.id, { onDelete: "cascade" })
+    .notNull(),
+  completed: boolean("completed").notNull().default(false),
+});
+
+export const challengeProgressRelations = relations(
+  challengeProgress,
+  ({ one }) => ({
+    challenge: one(challenges, {
+      fields: [challengeProgress.challengeId],
+      references: [challenges.id],
+    }),
+  })
+);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const users = pgTable("user", {
   id: text("id")
@@ -24,9 +97,7 @@ export const users = pgTable("user", {
 export const accounts = pgTable(
   "account",
   {
-    userId: text("userId")
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+    userId: text("userId").notNull(),
     type: text("type").$type<AdapterAccountType>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
@@ -64,5 +135,3 @@ export const verificationTokens = pgTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   })
 );
-
-export const lessons = pgTable("lesson", {});

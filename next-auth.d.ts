@@ -8,6 +8,7 @@ declare module "next-auth" {
   interface User {
     isAdmin: boolean;
     points: number;
+    activeLessonId: number;
   }
 
   /**

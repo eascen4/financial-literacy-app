@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { SessionProvider } from "next-auth/react";
-import useSessionServer from "@/lib/server/cachedAuth";
+import { cachedAuth } from "@/lib/server/caches";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +17,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await useSessionServer();
+  const session = await cachedAuth();
   return (
     <html lang="en">
       <body className={inter.className}>
