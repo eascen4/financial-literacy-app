@@ -3,12 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  html,
-  body {
-    min-height: 100vh;
-    height: 100%;
-    width: 100%;
-  }
 
   :root {
     --background: 0 0% 100%;
@@ -77,11 +71,17 @@
   .auth-form {
     @apply flex min-h-screen w-full max-w-[420px] flex-col justify-center gap-5 py-10 md:gap-8;
   }
+
+  .bg-stars {
+    background-image: url("/star_background.gif");
+    background-repeat: repeat;
+    background-size: contain;
+  }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border !scroll-smooth;
   }
   body {
     @apply bg-background text-foreground;

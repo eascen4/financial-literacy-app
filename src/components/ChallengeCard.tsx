@@ -2,6 +2,8 @@
 
 import { createChallengeProgress } from "@/lib/server/actions";
 import { Button } from "./ui/button";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 interface ChallengeOption {
   id: number;
@@ -24,20 +26,27 @@ interface Challenge {
 }
 
 const ChallengeCard = ({ challenge }: { challenge: Challenge }) => {
-  const isCompleted = challenge.challengeProgresses.some(
+  const [isLoading, startTransition] = useTransition();
+
+  const { challengeOptions, challengeProgresses } = challenge;
+  const isCompleted = challengeProgresses.some(
     (progress) => progress.completed
   );
 
-  const attemptChallenge = async (optionId: number) => {
-    if (challenge.challengeOptions.find((option) => option.id === optionId)?.correct) {
-      console.log("Correct!");
-      const success = await createChallengeProgress(challenge.id)
-      if (success) console.log("Challenge completed successfully");
-      if (!success) console.log("Failed to complete challenge or already completed!");
-    } else {
-        console.log("Incorrect!");
-    }
-  }
+  const attemptChallenge = async (optionCorrect: boolean) => {
+    startTransition(async () => {
+      if (optionCorrect) {
+        const response = await createChallengeProgress(challenge.id);
+        if (response.success) {
+          toast.success(response.message);
+        } else {
+          toast.error(response.message);
+        }
+      } else {
+        toast.error("Incorrect answer");
+      }
+    });
+  };
   return (
     <div
       className={`p-4 rounded shadow ${
@@ -46,15 +55,16 @@ const ChallengeCard = ({ challenge }: { challenge: Challenge }) => {
     >
       <h3 className="text-lg font-bold mb-2">{challenge.question}</h3>
       <ul>
-        {challenge.challengeOptions.map((option) => (
+        {challengeOptions.map((option) => (
           <Button
             key={option.id}
             className={`p-2 border rounded mb-1 text-black ${
-              isCompleted
+              isCompleted || isLoading
                 ? "bg-gray-300"
                 : "bg-blue-100 cursor-pointer hover:bg-blue-200"
             }`}
-            onClick={() => attemptChallenge(option.id)}
+            onClick={() => attemptChallenge(option.correct)}
+            disabled={isCompleted || isLoading}
           >
             {option.text}
           </Button>

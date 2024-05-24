@@ -12,13 +12,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { challengeOptionSchema } from "@/lib/constants";
 import { createChallengeOption } from "@/lib/server/actions";
+import { Switch } from "./ui/switch";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Checkbox } from "./ui/checkbox";
+import { toast } from "sonner";
+import { useTransition } from "react";
 
 const ChallengeOptionForm = () => {
+  const [isLoading, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof challengeOptionSchema>>({
     resolver: zodResolver(challengeOptionSchema),
     defaultValues: {
@@ -29,10 +33,14 @@ const ChallengeOptionForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof challengeOptionSchema>) {
-    console.log(values);
-    const success = await createChallengeOption(values);
-    if (success) console.log("Challenge Option created successfully");
-    if (!success) console.log("Failed to create Challenge Option");
+    startTransition(async () => {
+      const response = await createChallengeOption(values);
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        toast.error(response.message);
+      }
+    });
   }
 
   return (
@@ -67,7 +75,7 @@ const ChallengeOptionForm = () => {
               <FormItem>
                 <FormLabel>Challenge ID</FormLabel>
                 <FormControl>
-                <Input
+                  <Input
                     type="number"
                     className="text-black"
                     placeholder="Ex: 2"
@@ -86,13 +94,19 @@ const ChallengeOptionForm = () => {
               <FormItem>
                 <FormLabel>Correct?</FormLabel>
                 <FormControl>
-                  <Checkbox className="text-black" checked={field.value} onCheckedChange={field.onChange}/>
+                  <Switch 
+                  className="block"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit">Create Challenge option</Button>
+          <Button type="submit" disabled={isLoading}>
+            Create Challenge option
+          </Button>
         </form>
       </Form>
     </>

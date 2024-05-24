@@ -17,8 +17,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Textarea } from "./ui/textarea";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 const LessonForm = () => {
+  const [isLoading, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof lessonSchema>>({
     resolver: zodResolver(lessonSchema),
     defaultValues: {
@@ -29,9 +33,15 @@ const LessonForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof lessonSchema>) {
-    const success = await createLesson(values);
-    if (success) console.log("Lesson created successfully");
-    if (!success) console.log("Failed to create lesson");
+    startTransition(async () => {
+      const response = await createLesson(values);
+      if (response.success) {
+        toast.success(response.message);
+        form.reset();
+      } else {
+        toast.error(response.message);
+      }
+    });
   }
 
   return (
@@ -95,7 +105,9 @@ const LessonForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Create Lesson</Button>
+          <Button type="submit" disabled={isLoading}>
+            Create Lesson
+          </Button>
         </form>
       </Form>
     </>

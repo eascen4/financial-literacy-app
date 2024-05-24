@@ -14,10 +14,14 @@ import { challengeSchema } from "@/lib/constants";
 import { createChallenge } from "@/lib/server/actions";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 export const ChallengeForm = () => {
+  const [isLoading, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof challengeSchema>>({
     resolver: zodResolver(challengeSchema),
     defaultValues: {
@@ -28,9 +32,14 @@ export const ChallengeForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof challengeSchema>) {
-    const success = await createChallenge(values);
-    if (success) console.log("Challenge created successfully");
-    if (!success) console.log("Failed to create challenge");
+    startTransition(async () => {
+      const response = await createChallenge(values);
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        toast.error(response.message);
+      }
+    });
   }
 
   return (
@@ -96,7 +105,9 @@ export const ChallengeForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Create Lesson</Button>
+          <Button type="submit" disabled={isLoading}>
+            Create Lesson
+          </Button>
         </form>
       </Form>
     </>

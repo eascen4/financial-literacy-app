@@ -19,7 +19,6 @@ const ProfilePage = async () => {
           }
         }
       />
-      {JSON.stringify(session?.user)}
     </section>
   );
 };

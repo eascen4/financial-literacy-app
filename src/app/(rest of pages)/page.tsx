@@ -3,8 +3,7 @@ import Image from "next/image";
 const Home = async () => {
   return (
     <>
-
-    <section className="flex h-[90vh] w-full justify-around items-center relative">
+    <section className="flex min-h-[900px] justify-around items-center">
         <Image
           src="/rocket.svg"
           width={500}
@@ -16,7 +15,8 @@ const Home = async () => {
         Welcome to <span className="italic">Rocket Finance</span>
       </h1>
     </section>
-    <section className="flex h-[90vh] w-full justify-around items-center relative">
+    <section className="min-h-96">
+
     </section>
     </>
     
