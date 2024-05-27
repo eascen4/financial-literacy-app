@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ProgressBar from "./ProgressBar";
 
 interface Lesson {
   id: number;
@@ -25,13 +26,13 @@ const LessonCard = ({ lesson }: { lesson: Lesson }) => {
   return (
     <Link
       href={`/lessons/${id}`}
-      className="block p-4 bg-white rounded shadow hover:bg-gray-50 transition text-stone-950"
+      className="flex flex-col gap-2 p-6 bg-indigo-800/80 rounded-lg shadow-2xl hover:scale-105 "
     >
-      <h2 className="text-xl font-semibold">{title}</h2>
-      <p className="mt-2 text-sm text-gray-500">
-        Progress: {completedChallenges} / {totalChallenges} challenges completed
+      <h2 className="text-2xl font-semibold">{title}</h2>
+      <ProgressBar value={completedChallenges / totalChallenges} />
+      <p className="text-sm text-gray-400">
+        {completedChallenges} / {totalChallenges} challenges completed
       </p>
-      <p>{JSON.stringify(lesson)}</p>
     </Link>
   );
 };

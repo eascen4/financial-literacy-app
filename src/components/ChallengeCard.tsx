@@ -49,19 +49,19 @@ const ChallengeCard = ({ challenge }: { challenge: Challenge }) => {
   };
   return (
     <div
-      className={`p-4 rounded shadow ${
-        isCompleted ? "bg-gray-400" : "bg-white"
-      } text-black`}
+      className={`p-6 rounded-lg shadow-2xl w-full ${
+        isCompleted ? "bg-indigo-800/70 text-slate-300" : "bg-indigo-800/90 text-slate-50"
+      }`}
     >
-      <h3 className="text-lg font-bold mb-2">{challenge.question}</h3>
-      <ul>
+      <h3 className="text-xl font-semibold mb-4">{challenge.question}</h3>
+      <ul className="space-y-2">
         {challengeOptions.map((option) => (
           <Button
             key={option.id}
-            className={`p-2 border rounded mb-1 text-black ${
+            className={`w-full py-2 px-4 border rounded text-left ${
               isCompleted || isLoading
-                ? "bg-gray-300"
-                : "bg-blue-100 cursor-pointer hover:bg-blue-200"
+                ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700 text-slate-50 border-indigo-600"
             }`}
             onClick={() => attemptChallenge(option.correct)}
             disabled={isCompleted || isLoading}

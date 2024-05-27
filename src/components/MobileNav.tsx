@@ -62,7 +62,7 @@ const MobileNav = () => {
               </div>
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <div className="flex items-center gap-2 w-fit">
+                  <div className="flex items-center gap-2 w-fit cursor-pointer">
                     <Image
                       className=" rounded-full"
                       src={session.data.user?.image || "/default_pfp.svg"}

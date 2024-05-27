@@ -32,7 +32,7 @@ const WebNav = () => {
             <HoverCard>
               <HoverCardTrigger asChild>
                 <Image
-                  className=" rounded-full"
+                  className="rounded-full cursor-pointer"
                   src={session.data.user?.image || "/default_pfp.svg"}
                   width={30}
                   height={30}
