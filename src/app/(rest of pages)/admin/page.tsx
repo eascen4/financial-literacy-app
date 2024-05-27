@@ -9,7 +9,7 @@ const AdminPage = async () => {
   if (!session?.user.isAdmin) return <div>Unauthorized</div>;
 
   return (
-    <section>
+    <section className="flex-1 w-full">
       <div className="flex flex-col items-center text-slate-50 bg-gradient-to-b from-indigo-800/20 to-indigo-900 space-y-6 py-10">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">
           Admin Dashboard

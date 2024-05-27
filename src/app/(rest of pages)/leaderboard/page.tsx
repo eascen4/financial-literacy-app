@@ -5,7 +5,7 @@ const LeaderboardPage = async () => {
     const data  = await cachedLeaderboard()
 
   return (
-    <section>
+    <section className="h-full w-full">
         <Leaderboard data={data} />
     </section>
   )

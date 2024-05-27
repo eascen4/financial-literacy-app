@@ -17,7 +17,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <MobileNav />
         <WebNav />
       </header>
-      <main className="pt-16 w-full min-h-screen bg-indigo-950 bg-stars text-slate-50 relative justify-center items-center flex-col overflow-hidden">
+      <main className="pt-16 min-h-screen bg-indigo-950 bg-stars text-slate-50 relative flex justify-center items-center flex-col">
         {children}
       </main>
     </>
